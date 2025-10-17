@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% block style %}
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+  }
+
+  h2 {
+    color: #333;
+  }
+
+  form {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    max-width: 500px;
+    margin-bottom: 30px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  }
+
+  label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  input, select, textarea {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+  }
+
+  input[type="submit"] {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+
+  input[type="submit"]:hover {
+    background-color: #0056b3;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+  }
+
+  th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+  }
+
+  th {
+    background-color: #eaeaea;
+  }
+</style>
+{% endblock style %}
+
+{% block body %}
+<h2>Project Form</h2>
+
+<form method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+
+  <label>Project Name:</label>
+  <input type="text" name="project_name" required><br>
+
+  <label>Description:</label>
+  <textarea name="project_description" required></textarea><br>
+
+  <label>Status:</label>
+  <select name="project_status">
+    <option value="NotStarted">Not Started</option>
+    <option value="InProgress">In Progress</option>
+    <option value="Completed">Completed</option>
+  </select><br>
+
+  <label>Deadline:</label>
+  <input type="date" name="deadline" required><br>
+
+  <label>Thumbnail:</label>
+  <input type="file" name="thumbnail"><br>
+
+  <label>Created By:</label>
+  <select name="created_by" required>
+    <option value="">-- Select User --</option>
+    {% for user in users %}
+      <option value="{{ user.id }}">{{ user.student_name }}</option>
+    {% endfor %}
+  </select><br>
+
+  <input type="submit" value="Submit">
+</form>
+
+<h2>Project Table</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Project Name</th>
+      <th>Description</th>
+      <th>Status</th>
+      <th>Deadline</th>
+      <th>Thumbnail</th>
+      <th>Created By</th>
+      <th>action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for project in projects %}
+    <tr>
+      <td>{{ project.project_name }}</td>
+      <td>{{ project.project_description }}</td>
+      <td>{{ project.project_status }}</td>
+      <td>{{ project.deadline }}</td>
+      <td>
+        {% if project.thumbnail %}
+          <img src="{{ project.thumbnail.url }}" width="80">
+        {% else %}
+          No Image
+        {% endif %}
+      </td>
+      <td>{{ project.created_by.student_name }}</td>
+      <td>
+      <a href="{% url 'editprojecturl' project.id %}">Edit</a>
+      <a href="{% url 'deleteprojecturl' project.id %}">Delete</a>
+
+     </td>
+    </tr>
+    {% empty %}
+      <tr><td colspan="6">No projects yet</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock body %}

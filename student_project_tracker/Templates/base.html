@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Project Cards</title>
+
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* Navbar styling */
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333333;
+}
+
+ul li {
+  float: left;
+}
+
+ul li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+ul li a:hover {
+  background-color: #111111;
+}
+
+/* Card container and card styling */
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+  background: #f4f6f9;
+}
+
+.card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  width: 300px;
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 12px 12px 0 0;
+}
+
+.card .container {
+  padding: 16px;
+}
+
+.card h4 {
+  margin: 8px 0;
+}
+
+.card p {
+  margin: 4px 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+</style>
+
+{% block style %}{% endblock style %}
+</head>
+<body>
+
+<!-- Include your navbar -->
+{% include 'navbar.html' %}
+
+{% block body %}
+<h2 style="text-align:center; padding-top: 20px;">All Projects</h2>
+
+<div class="cards-container">
+  {% for project in projects %}
+  <div class="card">
+    <img src="{{ project.project_image.url }}" alt="Project Image">
+    
+    <div class="container">
+      <h4><b>{{ project.project_name }}</b></h4>
+      <p>{{ project.project_description }}</p>
+      <p>Status: {{ project.project_status }}</p>
+      <p>Deadline: {{ project.deadline }}</p>
+      <p>Created by: {{ project.created_by.username }}</p>
+    </div>
+  </div>
+  {% empty %}
+  <p>No projects found.</p>
+  {% endfor %}
+</div>
+{% endblock body %}
+
+</body>
+</html>
