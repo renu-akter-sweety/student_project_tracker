@@ -1,4 +1,4 @@
-# student_project_tracker
+# student_project_tracker(authentication+crud )
 Question:
 Create a Django project named student_project_tracker, where students register using a custom
 user model based on AbstractUser. After login, students can perform CRUD operations on a model
